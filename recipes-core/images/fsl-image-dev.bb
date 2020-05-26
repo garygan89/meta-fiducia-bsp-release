@@ -65,7 +65,7 @@ IMAGE_INSTALL_append = " htop tmux openssh"
 IMAGE_INSTALL_append = " apt opkg"
 
 # Virtualizations
-IMAGE_INSTALL_append = " docker libvirt qemu libxslt"
+IMAGE_INSTALL_append = " docker libvirt qemu libxslt-dev"
 
 # removes the problematic gstreamer package included in the default fsl recipe found at `sources/meta-fsl-bsp-release/imx/meta-sdk/recipes-fsl/images/fsl-image-validation-imx.bb`
 # CORE_IMAGE_EXTRA_INSTALL_remove = "packagegroup-fsl-gstreamer1.0 packagegroup-fsl-gstreamer1.0-full"
