@@ -1,23 +1,18 @@
 inherit core-image
-require fsl-image.bb
 
-SUMMARY = "A custom built image to include virtualization and optee for development."
+SUMMARY = "A custom built image to include virtualization and optee for production."
 
 IMAGE_ROOTFS_SIZE ?= "8192"
 IMAGE_ROOTFS_EXTRA_SPACE_append = "${@bb.utils.contains("DISTRO_FEATURES", "systemd", " + 4096", "" ,d)}"
 
 IMAGE_FEATURES += " \
-    debug-tweaks \
     tools-profile \
     splash \
     nfs-server \
-    tools-debug \
     ssh-server-openssh \
-    tools-testapps \
     hwcodecs \
 	package-management \
 	tools-sdk \
-	dev-pkgs \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', '', \
        bb.utils.contains('DISTRO_FEATURES',     'x11', 'x11-base x11-sato', \
                                                        '', d), d)} \
@@ -38,16 +33,14 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     ${ERPC_COMPS} \
 "
 
-# Moved the following to `distro/fsl-imx-xwayland-kvm-k3s-optee.conf`
 # Use systemd to init system and manage services instead of default sysvinit
-# DISTRO_FEATURES_append = " systemd"
-# DISTRO_FEATURES_remove = "sysvinit"
-# VIRTUAL-RUNTIME_init_manager = "systemd"
+DISTRO_FEATURES_append = " systemd"
+DISTRO_FEATURES_remove = "sysvinit"
+VIRTUAL-RUNTIME_init_manager = "systemd"
 
 # Enable features since some recipes check this field to automatically build packages supporting this feature via ${@bb.utils.contains('DISTRO_FEATURES','systemd','true','false',d)}; then. With this said, systemd will also enable systemd service when building package, x11 enable building x11 version of a program.
 # cgroup-lite, aufs and aufs-util required by docker
-
-# DISTRO_FEATURES_append = " optee virtualization kvm systemd aufs aufs-util cgroup-lite"
+DISTRO_FEATURES_append = " optee virtualization kvm systemd aufs aufs-util cgroup-lite"
 
 # -------------------------------------------------------
 # Packages

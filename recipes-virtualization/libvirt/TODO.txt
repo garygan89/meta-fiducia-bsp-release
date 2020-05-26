@@ -1,0 +1,1 @@
+Add libvirt 5.5.0 recipe here from meta-virtualization [master] branch.
